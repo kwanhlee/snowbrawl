@@ -1,0 +1,19 @@
+
+/* Main Containers */
+.outer-container {
+  height: 600px;
+  width: 800px;
+  background: #eee;
+  border: 5px solid #ccc;
+}
+.game-window {
+  height: 100%;
+  width: 500px;
+  background: white;
+  border-right: 3px solid #53f;
+  float: left;
+  position: relative;
+}
+#actualGame{
+
+}
