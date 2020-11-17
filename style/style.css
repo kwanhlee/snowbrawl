@@ -32,12 +32,12 @@ body {
   transform: translateX(-50%);
   width: 13%;
   border-radius: 12px;
-  margin-top: 30px;
+  margin-top: 50px;
 }
 
 .multiplayer-btn {
   top: 44%;
-  margin-top: 50px
+  margin-top: 80px;
 }
 
 .title {
