@@ -2,7 +2,6 @@
 .game-window {
   height: 100%;
   width: 100%;
-  background: #eee;
   background-image: url('images/menu_background.jpg');
   background-size:100% 100%;
 }

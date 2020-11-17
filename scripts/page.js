@@ -41,11 +41,16 @@ function getRandomNumber(min, max){
   return (Math.random() * (max - min)) + min;
 }
 
-function click_multiplayer(){
-  alert("user wants to play multiplayer")
+function multiplayer_game(){
+  document.getElementsByClassName("game-window")[0].style.backgroundImage = "url('style/images/game_background.jpg')";
+  document.getElementsByClassName("title")[0].remove();
+  document.getElementsByClassName("multiplayer-btn")[0].remove();
+  document.getElementsByClassName("single-player-btn")[0].remove();
 }
 
 function singleplayer_game(){
-  alert("test")
-  //$("game-window").css("background-image", "url('images/menu_background.jpg')");
+  document.getElementsByClassName("game-window")[0].style.backgroundImage = "url('style/images/game_background.jpg')";
+  document.getElementsByClassName("title")[0].remove();
+  document.getElementsByClassName("multiplayer-btn")[0].remove();
+  document.getElementsByClassName("single-player-btn")[0].remove();
 }
