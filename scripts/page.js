@@ -45,6 +45,7 @@ function click_multiplayer(){
   alert("user wants to play multiplayer")
 }
 
-function click_singleplayer(){
-  alert("user wants to play single player")
+function singleplayer_game(){
+  alert("test")
+  //$("game-window").css("background-image", "url('images/menu_background.jpg')");
 }
