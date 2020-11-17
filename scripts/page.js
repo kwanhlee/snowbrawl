@@ -67,6 +67,7 @@ function leave_menu(){
 
     if (timer == 0){
       clearInterval(timer_interval)
+      end_game();
     }
   }, 1000);
 }
@@ -79,4 +80,16 @@ function create_boards(){
     $("#userBoard").append("<div id='user-tile-" + i + "' class='tile'></div>");
     $("#opponentBoard").append("<div id='opponent-tile-" + i + "' class='tile'></div>");
   }
+}
+
+function end_game(){
+  $("#actualGame").html("<h1 id='place_items_title' style='top: 30%; color: red;'>Game Ended</h1>");
+  $("#actualGame").append("<button type='button' class='btn btn-primary btn-lg single-player-btn' onclick='menu_button()' style='top: 40%'>Menu</button>")
+}
+
+function menu_button(){
+  let menu_html = "<h1 class='title'>Snow Brawl</h1>"
+  menu_html += "<button type='button' class='btn btn-primary btn-lg single-player-btn' onclick='singleplayer_game()'>Single Player</button>"
+  menu_html += "<button type='button' class='btn btn-primary btn-lg multiplayer-btn single-player-btn' onclick='multiplayer_game()'>Multiplayer</button>"
+  $("#actualGame").html(menu_html)
 }
