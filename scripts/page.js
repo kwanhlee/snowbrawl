@@ -76,10 +76,37 @@ function create_boards(){
   $("#actualGame").append("<div class='board' id='opponentBoard'></div>");
 
   for (let i = 1; i < 26; i++){
-    $("#userBoard").append("<div id='user-tile-" + i + "' class='tile'></div>");
+    $("#userBoard").append("<div id='user-tile-" + i + "' class='tile user_tile'></div>");
     $("#opponentBoard").append("<div id='opponent-tile-" + i + "' class='tile'></div>");
   }
+
+  $("#actualGame").append("<div class='select-legend'></div>")
+
+  $( ".user_tile" ).droppable({
+    classes: {
+
+    },
+    drop: function( event, ui ) {
+      
+    },
+    out: function(event, ui) {
+      $( this )
+        .removeClass( "ui-state-highlight" )
+    }
+  });
+  $(".select-legend").droppable();
+
+  for (let i = 1; i < 6; i++){
+    $('.select-legend').append("<img src='style/images/present.png' class='present' id='ship-" + i + "'>");
+  }
+
+  $(".present").draggable({
+    revert: 'invalid', 
+    snap: ".user_tile"
+  });
+
 }
+
 
 function end_game(){
   $("#actualGame").html("<h1 id='place_items_title' style='top: 30%; color: red;'>Game Ended</h1>");
@@ -93,3 +120,8 @@ function menu_button(){
   $(".game-window").css("background-image", "url('style/images/menu_background.jpg')");
   $("#actualGame").html(menu_html);
 }
+
+function handle_drop_patient(event, ui) {
+
+}
+

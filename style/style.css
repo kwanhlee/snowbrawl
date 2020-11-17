@@ -79,6 +79,19 @@ body {
   border-width: thin;
 }
 
+.user_tile {
+  
+}
+
+.select-legend {
+  border: solid;
+  width: 8%;
+  height: 70%;
+  position: absolute;
+  top: 15%;
+  left: 1%;
+}
+
 .board {
   height: 31vw;
   width: 31vw;
@@ -96,3 +109,14 @@ body {
 #userBoard {
   left: 15%;
 }
+
+.present {
+  width: 6vw;
+  height: 6vw;
+}
+
+.highlight {
+    border: 1px solid yellow;
+    background-color: yellow;
+}
+
