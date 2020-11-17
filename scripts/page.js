@@ -72,11 +72,11 @@ function leave_menu(){
 }
 
 function create_boards(){
-  $("#actualGame").append("<div class='userBoard'></div>")
-  $("#actualGame").append("<div class='opponentBoard'></div>")
+  $("#actualGame").append("<div class='board' id='userBoard'></div>")
+  $("#actualGame").append("<div class='board' id='opponentBoard'></div>")
 
   for (let i = 1; i < 26; i++){
-    $(".userBoard").append("<div id='user-tile-" + i + "' class='tile'></div>");
-    $(".opponentBoard").append("<div id='opponent-tile-" + i + "' class='tile'></div>");
+    $("#userBoard").append("<div id='user-tile-" + i + "' class='tile'></div>");
+    $("#opponentBoard").append("<div id='opponent-tile-" + i + "' class='tile'></div>");
   }
 }
