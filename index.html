@@ -6,15 +6,20 @@
 <script src='scripts/jquery.min.js'></script>
 <script src='scripts/page.js'></script>
 
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 <!-- CSS -->
 <link rel="stylesheet" type="text/css" href="style/style.css">
 
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
 <!-- HTML -->
 <body>
-  <div class='outer-container'>
-    <div class='game-window'>
-      <div id="actualGame">
-      </div>
+  <div class='game-window'>
+    <div id="actualGame">
+    	<h1 class="title">Snow Brawl</h1>
+    	<button type="button" class="btn btn-primary btn-lg single-player-btn" onclick="click_singleplayer()">Single Player</button> 
+    	<button type="button" class="btn btn-primary btn-lg multiplayer-btn" onclick="click_multiplayer()">Multiplayer</button> 
     </div>
   </div>
 </body>

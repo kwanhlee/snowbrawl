@@ -40,3 +40,11 @@ function isColliding(o1, o2) {
 function getRandomNumber(min, max){
   return (Math.random() * (max - min)) + min;
 }
+
+function click_multiplayer(){
+  alert("user wants to play multiplayer")
+}
+
+function click_singleplayer(){
+  alert("user wants to play single player")
+}

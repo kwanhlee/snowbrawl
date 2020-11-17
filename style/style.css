@@ -1,19 +1,51 @@
 
 /* Main Containers */
-.outer-container {
-  height: 600px;
-  width: 800px;
-  background: #eee;
-  border: 5px solid #ccc;
-}
 .game-window {
   height: 100%;
-  width: 500px;
-  background: white;
-  border-right: 3px solid #53f;
-  float: left;
-  position: relative;
+  width: 100%;
+  background: #eee;
+  background-image: url('images/menu_background.jpg');
+  background-size:100% 100%;
 }
 #actualGame{
 
+}
+
+#menu-background {
+  height: 100%;
+  width: 100%;
+}
+
+body {
+  margin: 0;
+}
+
+.single-player-btn {
+  background-color: white;
+  color: blue;
+  font-weight: bold;
+  margin:0 auto;
+  display:block;
+  position: relative;
+  top: 220px;
+  width: 250px;
+}
+
+.multiplayer-btn {
+  background-color: white;
+  color: blue;
+  font-weight: bold;
+  margin:0 auto;
+  display:block;
+  position: relative;
+  top: 250px;
+  width: 250px;
+}
+
+.title {
+  font-size: 80px;
+  color: white;
+  text-align: center;
+  position: relative;
+  top: 200px;
 }
