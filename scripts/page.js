@@ -42,15 +42,41 @@ function getRandomNumber(min, max){
 }
 
 function multiplayer_game(){
-  document.getElementsByClassName("game-window")[0].style.backgroundImage = "url('style/images/game_background.jpg')";
-  document.getElementsByClassName("title")[0].remove();
-  document.getElementsByClassName("multiplayer-btn")[0].remove();
-  document.getElementsByClassName("single-player-btn")[0].remove();
+  leave_menu();
+  create_boards();
 }
 
 function singleplayer_game(){
-  document.getElementsByClassName("game-window")[0].style.backgroundImage = "url('style/images/game_background.jpg')";
-  document.getElementsByClassName("title")[0].remove();
-  document.getElementsByClassName("multiplayer-btn")[0].remove();
-  document.getElementsByClassName("single-player-btn")[0].remove();
+  leave_menu();
+  create_boards();
+}
+
+function leave_menu(){
+  $(".game-window").css("background-image", "url('style/images/game_background.jpg')");
+  $(".title").remove();
+  $(".single-player-btn").remove();
+
+  $("#actualGame").append( "<h1 id='place_items_title'>Place your items</h1>" );
+
+  let timer = 30;
+  $( "#actualGame" ).append( "<h1 id='timer'>" + timer + "</h1>" );
+  let timer_interval = setInterval(function(){
+    timer -= 1;
+    console.log(timer)
+    $("#timer").html(timer);
+
+    if (timer == 0){
+      clearInterval(timer_interval)
+    }
+  }, 1000);
+}
+
+function create_boards(){
+  $("#actualGame").append("<div class='userBoard'></div>")
+  $("#actualGame").append("<div class='opponentBoard'></div>")
+
+  for (let i = 1; i < 26; i++){
+    $(".userBoard").append("<div id='user-tile-" + i + "' class='tile'></div>");
+    $(".opponentBoard").append("<div id='opponent-tile-" + i + "' class='tile'></div>");
+  }
 }
