@@ -62,7 +62,6 @@ function leave_menu(){
   $( "#actualGame" ).append( "<h1 id='timer'>" + timer + "</h1>" );
   let timer_interval = setInterval(function(){
     timer -= 1;
-    console.log(timer)
     $("#timer").html(timer);
 
     if (timer == 0){
@@ -73,8 +72,8 @@ function leave_menu(){
 }
 
 function create_boards(){
-  $("#actualGame").append("<div class='board' id='userBoard'></div>")
-  $("#actualGame").append("<div class='board' id='opponentBoard'></div>")
+  $("#actualGame").append("<div class='board' id='userBoard'></div>");
+  $("#actualGame").append("<div class='board' id='opponentBoard'></div>");
 
   for (let i = 1; i < 26; i++){
     $("#userBoard").append("<div id='user-tile-" + i + "' class='tile'></div>");
@@ -84,12 +83,13 @@ function create_boards(){
 
 function end_game(){
   $("#actualGame").html("<h1 id='place_items_title' style='top: 30%; color: red;'>Game Ended</h1>");
-  $("#actualGame").append("<button type='button' class='btn btn-primary btn-lg single-player-btn' onclick='menu_button()' style='top: 40%'>Menu</button>")
+  $("#actualGame").append("<button type='button' class='btn btn-primary btn-lg single-player-btn' onclick='menu_button()' style='top: 40%'>Menu</button>");
 }
 
 function menu_button(){
-  let menu_html = "<h1 class='title'>Snow Brawl</h1>"
-  menu_html += "<button type='button' class='btn btn-primary btn-lg single-player-btn' onclick='singleplayer_game()'>Single Player</button>"
-  menu_html += "<button type='button' class='btn btn-primary btn-lg multiplayer-btn single-player-btn' onclick='multiplayer_game()'>Multiplayer</button>"
-  $("#actualGame").html(menu_html)
+  let menu_html = "<h1 class='title'>Snow Brawl</h1>";
+  menu_html += "<button type='button' class='btn btn-primary btn-lg single-player-btn' onclick='singleplayer_game()'>Single Player</button>";
+  menu_html += "<button type='button' class='btn btn-primary btn-lg multiplayer-btn single-player-btn' onclick='multiplayer_game()'>Multiplayer</button>";
+  $(".game-window").css("background-image", "url('style/images/menu_background.jpg')");
+  $("#actualGame").html(menu_html);
 }
