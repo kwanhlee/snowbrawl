@@ -3,6 +3,9 @@
 // Global Window Handles (gwh__)
 let gwhGame;
 
+// Player's Ship Dictionary
+let player1_present_dict = {};
+
 ////  Functional Code  ////
 
 // Main
@@ -36,6 +39,23 @@ function isColliding(o1, o2) {
   return false;
 }
 
+// Present Class Constructor Function
+class Present {
+  constructor(id) {
+    this.id = id;
+    this.placed = false;
+  }
+}
+
+// Function to loop and check if all items has been placed
+function isAllItemsPlaced() {
+  for (const [key, value] of Object.entries(player1_present_dict)) {
+    if (value.placed === false) {
+      return false;
+    }
+  }
+  return true;
+}
 // Get random number between min and max integer
 function getRandomNumber(min, max){
   return (Math.random() * (max - min)) + min;
@@ -87,7 +107,14 @@ function create_boards(){
 
     },
     drop: function( event, ui ) {
+      // Returns for ex: ship-2
+      let draggableId = ui.draggable.attr("id");
+
+      // Returns: 2
+      let arr = draggableId.split("-");
       
+      // Modify the placed property
+      player1_present_dict[arr[1]].placed = true;
     },
     out: function(event, ui) {
       $( this )
@@ -98,6 +125,12 @@ function create_boards(){
 
   for (let i = 1; i < 6; i++){
     $('.select-legend').append("<img src='style/images/present.png' class='present' id='ship-" + i + "'>");
+
+    // Create new present object
+    let presentObject = new Present(i);
+
+    // Push present object to player_1 dictionary --> [index: presentObject] pairs
+    player1_present_dict[i] = presentObject;
   }
 
   $(".present").draggable({
