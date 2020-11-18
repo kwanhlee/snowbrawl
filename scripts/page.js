@@ -104,27 +104,28 @@ function create_boards(){
 
   $( ".user_tile" ).droppable({
     classes: {
-
+      "ui-droppable-hover": "highlight",
     },
     drop: function( event, ui ) {
+      $( this ).addClass("selected")
       // Returns for ex: ship-2
-      let draggableId = ui.draggable.attr("id");
+      //let draggableId = ui.draggable.attr("id");
 
       // Returns: 2
-      let arr = draggableId.split("-");
+      //let arr = draggableId.split("-");
       
       // Modify the placed property
-      player1_present_dict[arr[1]].placed = true;
+      //player1_present_dict[arr[1]].placed = true;
     },
     out: function(event, ui) {
       $( this )
-        .removeClass( "ui-state-highlight" )
-    }
+        .removeClass("selected")
+    },
+    tolerance: "fit"
   });
-  $(".select-legend").droppable();
 
   for (let i = 1; i < 6; i++){
-    $('.select-legend').append("<img src='style/images/present.png' class='present' id='ship-" + i + "'>");
+    $('.select-legend').append("<div class='size_1_item'><img src='style/images/present.png' class='present center' id='ship-" + i + "'></div>");
 
     // Create new present object
     let presentObject = new Present(i);
@@ -133,9 +134,15 @@ function create_boards(){
     player1_present_dict[i] = presentObject;
   }
 
+  $(".size_1_item").droppable({
+    classes: {
+      "ui-droppable-hover": "highlight",
+    },
+    tolerance: "fit"
+  });
+
   $(".present").draggable({
-    revert: 'invalid', 
-    snap: ".user_tile"
+    revert: 'invalid'
   });
 
 }
