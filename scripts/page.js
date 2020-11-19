@@ -204,7 +204,7 @@ function start_single_player_game_interaction() {
   $(".present").draggable('disable');
 
   // Remove the Legends
-  $( ".select-legend" ).remove();
+  // $( ".select-legend" ).remove();
 
   // Set Timer according to State
 }
