@@ -119,14 +119,7 @@ function create_boards(){
       });
 
       $(this).droppable('option', 'accept', ui.draggable);
-      // Returns for ex: ship-2
-      //let draggableId = ui.draggable.attr("id");
-
-      // Returns: 2
-      //let arr = draggableId.split("-");
-      
-      // Modify the placed property
-      //player1_present_dict[arr[1]].placed = true;
+      update_item_placed(false, ui);
     },
     out: function(event, ui) {
       $(this).droppable('option', 'accept', '.present');
@@ -158,6 +151,7 @@ function create_boards(){
           $(this).animate(pos, 200, "linear");
         }
       });
+      update_item_placed(true, ui);
     },
     out: function(event, ui) {
       
@@ -170,6 +164,24 @@ function create_boards(){
 
 }
 
+// If the item has been dropped into the user tile, update "placed" property to true
+// If the item has been dropped back to the origin, update "placed" property to false
+function update_item_placed(isOrigin, ui) {
+  // Returns for ex: ship-2
+  let draggableId = ui.draggable.attr("id");
+
+  // Returns: 2
+  let arr = draggableId.split("-");
+
+  if (isOrigin === true) {
+    // Modify the placed property
+    player1_present_dict[arr[1]].placed = false;
+  } else {
+    // Modify the placed property
+    player1_present_dict[arr[1]].placed = true;
+  }
+  
+}
 
 function end_game(){
   $("#actualGame").html("<h1 id='place_items_title' style='top: 30%; color: red;'>Game Ended</h1>");
