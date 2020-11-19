@@ -85,9 +85,8 @@ body {
 
 .select-legend {
   border: solid;
-  width: 6.5vw;
   position: absolute;
-  top: 2vw;
+  top: 1vw;
   left: 1vw;
 }
 
@@ -124,6 +123,8 @@ body {
 
 .size_1_item {
   border: solid;
+  height: 6vw;
+  width: 6vw;
 }
 
 .center {

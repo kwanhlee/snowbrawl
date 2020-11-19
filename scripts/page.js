@@ -126,7 +126,6 @@ function create_boards(){
 
       $(this).droppable('option', 'accept', ui.draggable);
       update_item_placed(false, ui, $this);
-
     },
     out: function(event, ui) {
       $(this).droppable('option', 'accept', '.present');
