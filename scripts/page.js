@@ -134,7 +134,7 @@ function create_boards(){
     }
   });
 
-  for (let i = 1; i < 6; i++){
+  for (let i = 1; i < 9; i++){
     $('.select-legend').append("<div class='size_1_item'><img src='style/images/present.png' class='present center' id='ship-" + i + "'></div>");
 
     // Create new present object
@@ -149,7 +149,6 @@ function create_boards(){
       "ui-droppable-hover": "highlight",
     },
     drop: function( event, ui ) {
-      $( this ).addClass("selected");
       var $this = $(this);
       ui.draggable.position({
         my: "center",
@@ -161,7 +160,7 @@ function create_boards(){
       });
     },
     out: function(event, ui) {
-      $( this ).removeClass("selected");
+      
     }
   });
 
