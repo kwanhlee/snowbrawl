@@ -107,7 +107,16 @@ function create_boards(){
       "ui-droppable-hover": "highlight",
     },
     drop: function( event, ui ) {
-      $( this ).addClass("selected")
+      $( this ).addClass("selected");
+      var $this = $(this);
+      ui.draggable.position({
+        my: "center",
+        at: "center",
+        of: $this,
+        using: function(pos) {
+          $(this).animate(pos, 200, "linear");
+        }
+      });
       // Returns for ex: ship-2
       //let draggableId = ui.draggable.attr("id");
 
@@ -120,8 +129,7 @@ function create_boards(){
     out: function(event, ui) {
       $( this )
         .removeClass("selected")
-    },
-    tolerance: "fit"
+    }
   });
 
   for (let i = 1; i < 6; i++){
@@ -138,7 +146,18 @@ function create_boards(){
     classes: {
       "ui-droppable-hover": "highlight",
     },
-    tolerance: "fit"
+    drop: function( event, ui ) {
+      $( this ).addClass("selected");
+      var $this = $(this);
+      ui.draggable.position({
+        my: "center",
+        at: "center",
+        of: $this,
+        using: function(pos) {
+          $(this).animate(pos, 200, "linear");
+        }
+      });
+    },
   });
 
   $(".present").draggable({
