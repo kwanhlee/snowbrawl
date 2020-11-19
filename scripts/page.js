@@ -86,7 +86,11 @@ function leave_menu(){
 
     if (timer == 0){
       clearInterval(timer_interval)
-      end_game();
+      if (isAllItemsPlaced() === true) {
+        start_single_player_game_interaction();
+      } else {
+        end_game();
+      }
     }
   }, 1000);
 }
@@ -159,7 +163,8 @@ function create_boards(){
   });
 
   $(".present").draggable({
-    revert: 'invalid'
+    revert: 'invalid',
+    disabled: false
   });
 
 }
@@ -186,6 +191,22 @@ function update_item_placed(isOrigin, ui) {
 function end_game(){
   $("#actualGame").html("<h1 id='place_items_title' style='top: 30%; color: red;'>Game Ended</h1>");
   $("#actualGame").append("<button type='button' class='btn btn-primary btn-lg single-player-btn' onclick='menu_button()' style='top: 40%'>Menu</button>");
+}
+
+// Function that is called when User has placed all its items on the grid after 30 seconds
+function start_single_player_game_interaction() {
+  console.log("Start Match");
+
+  // Change Instruction Text Label
+  $("#place_items_title").text("Start Match");
+
+  // Disable Draggable Interactions
+  $(".present").draggable('disable');
+
+  // Remove the Legends
+  $( ".select-legend" ).remove();
+
+  // Set Timer according to State
 }
 
 function menu_button(){
