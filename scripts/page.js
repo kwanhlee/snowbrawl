@@ -5,8 +5,22 @@ let gwhGame;
 
 // Player's Ship Dictionary
 let player1_present_dict = {};
+let AI_present_array = [];
 
-////  Functional Code  ////
+// Players Hit Count
+let player1_hitCount = 8;
+let AI_hitCount = 8;
+
+// Players choices (for example: index -> 0/1)
+let player_choices_dict = {}
+let AI_choices_dict = {}
+
+// State "ENUM" for game (No apparent enums in JS)
+const GameState = {
+  PLAYERTURN: 1,
+  OPPONENTTURN: 2,
+  GAMEOVER: 3
+}
 
 // Main
 $(document).ready( function() {
@@ -207,6 +221,8 @@ function end_game(){
 function start_single_player_game_interaction() {
   console.log("Start Match");
 
+
+
   // Change Instruction Text Label
   $("#place_items_title").text("Start Match");
 
@@ -224,8 +240,45 @@ function start_single_player_game_interaction() {
   // Remove the Legends
   $( ".select-legend" ).remove();
 
-  // Set Timer according to State
+  // run game
+  runGame(GameState.PLAYERTURN);
+
 }
+
+function runGame(state) {
+  if (state === GameState.GAMEOVER) {
+    console.log("Game Over");
+    end_game()
+    return;
+  }
+  switch (state) {
+    case GameState.PLAYERTURN:
+      console.log("player turn");
+      // Player can choose opponent grid
+
+
+      // Button to Fire
+
+
+      //Set timer to 15 seconds
+
+      // End game for testing purpose
+      runGame(GameState.GAMEOVER);
+      
+      break;
+    case GameState.OPPONENTTURN:
+
+      // Unselectable opponent grid
+
+
+      // Fire Button gone
+
+      console.log("opponent Turn")
+      // Opponent makes choice
+      break;
+  }
+}
+
 
 function menu_button(){
   let menu_html = "<h1 class='title'>Snow Brawl</h1>";
