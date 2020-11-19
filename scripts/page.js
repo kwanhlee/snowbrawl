@@ -117,6 +117,8 @@ function create_boards(){
           $(this).animate(pos, 200, "linear");
         }
       });
+
+      $(this).droppable('option', 'accept', ui.draggable);
       // Returns for ex: ship-2
       //let draggableId = ui.draggable.attr("id");
 
@@ -127,8 +129,8 @@ function create_boards(){
       //player1_present_dict[arr[1]].placed = true;
     },
     out: function(event, ui) {
-      $( this )
-        .removeClass("selected")
+      $(this).droppable('option', 'accept', '.present');
+      $( this ).removeClass("selected");
     }
   });
 
@@ -158,6 +160,9 @@ function create_boards(){
         }
       });
     },
+    out: function(event, ui) {
+      $( this ).removeClass("selected");
+    }
   });
 
   $(".present").draggable({
