@@ -219,6 +219,7 @@ function start_single_player_game_interaction() {
   for (const [key, value] of Object.entries(player1_present_dict)) {
     $("#ship-" + key).appendTo($("#user-tile-" + value.location));
     $("#ship-" + key).removeAttr('style');
+    $("#ship-" + key).css("top", ".3vw");
   }
   
   // Remove the Legends
