@@ -215,9 +215,10 @@ function start_single_player_game_interaction() {
   $(".present").draggable('disable');
 
 
-  // Move all child div inside Legend div into each divs inside the grid tiles
+  // Move all child div inside Legend div into each divs inside the grid tiles and remove style attribute for positioning
   for (const [key, value] of Object.entries(player1_present_dict)) {
     $("#ship-" + key).appendTo($("#user-tile-" + value.location));
+    $("#ship-" + key).removeAttr('style');
   }
   
   // Remove the Legends
