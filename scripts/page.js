@@ -5,12 +5,14 @@ let gwhGame;
 
 // Player's Ship Dictionary
 let player1_ship_dict = {};
+let player1_ship_locations_alive = new Set();
 let ai_ship_locations = [];
 let ai_ships_locations_alive = [];
 
-// Players Hit Count
-let player1_hitCount = 8;
-let AI_hitCount = 8;
+// Player choices options
+let player1_options = new Set([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25]);
+let AI_options = new Set([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,
+21,22,23,24,25]);                      
 
 // Players choices (for example: index -> 0/1)
 let player_choices_dict = {}
@@ -22,6 +24,14 @@ const GameState = {
   OPPONENTTURN: 2,
   GAMEOVER: 3
 }
+
+// Attack Result Enum
+const AttackResult = {
+  MISS: 0,
+  HIT: 1
+}
+
+Set.prototype.getByIndex = function(index) { return [...this][index]; }
 
 // Main
 $(document).ready( function() {
@@ -215,6 +225,8 @@ function end_game(){
 function start_single_player_game_interaction() {
   console.log("Start Match");
 
+  // initialize player1 alive ship locations
+  initialize_player1_ship_locations();
 
 
   // Change Instruction Text Label
@@ -328,12 +340,14 @@ function runGame(state) {
       }, 1000); 
 
       setTimeout(function(){
+        make_ai_attack_choices();
         runGame(GameState.PLAYERTURN);
       }, 3000); 
 
       // AI needs to make a random selection from the selectable grid squares on the users side. 
       // If the AI gets a hit, append a image over top the players ship
       // If the AI gets a miss, append a image inside the grid the AI choose to shoot.
+      
 
       console.log("opponent Turn")
       break;
@@ -349,6 +363,13 @@ function menu_button(){
   $("#actualGame").html(menu_html);
 }
 
+
+function initialize_player1_ship_locations() {
+  for (const [key, value] of Object.entries(player1_ship_dict)) {
+    player1_ship_locations_alive.add(parseInt(value.location));
+  }
+}
+//////////////// AI Functions
 function make_ai_ship_choices() {
   for(let i = 0; i < 8; ++i){
     let randNum = Math.ceil(getRandomNumber(0, 24));
@@ -359,5 +380,40 @@ function make_ai_ship_choices() {
   }
 
   ai_ships_locations_alive = ai_ship_locations;
+}
+
+// AI makes a random choice from available options. It then appends image HIT or MISS to player's grid depending on the choice.
+function make_ai_attack_choices() {
+  console.log("AI ATTACKING.....")
+  // Choose a random number with the length as an index of the options
+  let randNum = Math.ceil(getRandomNumber(0, AI_options.size - 1));
+
+
+  let indexToAttack = AI_options.getByIndex(randNum);
+
+  console.log("index to attacK", indexToAttack);
+
+  // Delete this number from the options
+  AI_options.delete(indexToAttack);
+
+
+  // If this chosen option is in Player 1 Alive, append to AI choices dict with the [choice: HIT], where 1 = HIT
+  if (player1_ship_locations_alive.has(indexToAttack)) {
+    console.log("HITTTTT");
+    ai_choices_dict[indexToAttack] = AttackResult.HIT;
+
+    // Delete from the player location alive set
+    player1_ship_locations_alive.delete(indexToAttack);
+
+    // Append HIT image to player's grid
+    $("#user-tile-" + indexToAttack).append("<img src='style/images/" + "hit.png'" + "class='attack_img center' style='top: -5vw;'" + ">");
+    
+  } else {
+    // Else, append to AI choices dict with the choice [choice: 0]
+    ai_choices_dict[indexToAttack] = AttackResult.MISS;
+
+    // Append MISS image to player's grid
+    $("#user-tile-" + indexToAttack).append("<img src='style/images/" + "miss.png'" + "class='attack_img center'" + ">");
+  }
 }
 

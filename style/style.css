@@ -112,6 +112,12 @@ body {
   width: 5.5vw;
   height: 5.5vw;
 }
+.attack_img {
+  width: 5.5vw;
+  height: 5.5vw;
+  z-index: 3;
+  position: absolute;
+}
 
 .highlight {
   background-color: yellow;
