@@ -275,6 +275,7 @@ function runGame(state) {
           $( ".shootable").unbind( "mouseleave" );
           $( ".shootable").unbind( "click" );
           $( ".shootable").removeClass("highlight");
+
         }
       }, 1000); 
 
@@ -300,27 +301,32 @@ function runGame(state) {
   
           target_id = parseInt(target_id.split("-")[2]);
 
+          $(event.target).removeClass("shootable");
+
           if(ai_ships_locations_alive.includes(target_id)){
             console.log("HIT");
 
             ai_ships_locations_alive.splice(ai_ships_locations_alive.indexOf(target_id), 1);
-            $(event.target).removeClass("shootable");
-
-            console.log(ai_ships_locations_alive.length);
 
             // Need to append image of a hit sign to the event.target
             $("#opponent-tile-" + target_id).append("<img src='style/images/" + "hit.png'" + "class='attack_img center'" + ">");
+
             if(ai_ships_locations_alive.length == 0){
-              runGame(GameState.GAMEOVER);
+              $("#game_title").text("You won!");
+              setTimeout(function(){
+                runGame(GameState.GAMEOVER);
+              }, 5000); 
+            }
+            else {
+              runGame(GameState.OPPONENTTURN);
             }
           }
           else {
             // Need to append image of miss sign to the event.target
             $("#opponent-tile-" + target_id).append("<img src='style/images/" + "miss.png'" + "class='attack_img center'" + ">");
             console.log("MISS");
+            runGame(GameState.OPPONENTTURN);
           }
-
-          runGame(GameState.OPPONENTTURN);
         }
       });
       
@@ -341,17 +347,20 @@ function runGame(state) {
       }, 1000); 
 
       setTimeout(function(){
-        
+        clearInterval(t_interval);
         make_ai_attack_choices();
 
         // If the player ship's alive size is 0, end the game.
         if (player1_ship_locations_alive.size === 0) {
-          runGame(GameState.GAMEOVER);
+          $("#game_title").text("You lost!");
+          setTimeout(function(){
+            runGame(GameState.GAMEOVER);
+          }, 5000); 
         } else {
           runGame(GameState.PLAYERTURN);
         }
   
-      }, 3000); 
+      }, 5000); 
 
       // AI needs to make a random selection from the selectable grid squares on the users side. 
       // If the AI gets a hit, append a image over top the players ship
