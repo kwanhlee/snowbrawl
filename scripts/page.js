@@ -309,13 +309,14 @@ function runGame(state) {
             console.log(ai_ships_locations_alive.length);
 
             // Need to append image of a hit sign to the event.target
-
+            $("#opponent-tile-" + target_id).append("<img src='style/images/" + "hit.png'" + "class='attack_img center'" + ">");
             if(ai_ships_locations_alive.length == 0){
               runGame(GameState.GAMEOVER);
             }
           }
           else {
             // Need to append image of miss sign to the event.target
+            $("#opponent-tile-" + target_id).append("<img src='style/images/" + "miss.png'" + "class='attack_img center'" + ">");
             console.log("MISS");
           }
 
@@ -340,8 +341,16 @@ function runGame(state) {
       }, 1000); 
 
       setTimeout(function(){
+        
         make_ai_attack_choices();
-        runGame(GameState.PLAYERTURN);
+
+        // If the player ship's alive size is 0, end the game.
+        if (player1_ship_locations_alive.size === 0) {
+          runGame(GameState.GAMEOVER);
+        } else {
+          runGame(GameState.PLAYERTURN);
+        }
+  
       }, 3000); 
 
       // AI needs to make a random selection from the selectable grid squares on the users side. 
@@ -384,22 +393,18 @@ function make_ai_ship_choices() {
 
 // AI makes a random choice from available options. It then appends image HIT or MISS to player's grid depending on the choice.
 function make_ai_attack_choices() {
-  console.log("AI ATTACKING.....")
+
   // Choose a random number with the length as an index of the options
   let randNum = Math.ceil(getRandomNumber(0, AI_options.size - 1));
 
-
   let indexToAttack = AI_options.getByIndex(randNum);
-
-  console.log("index to attacK", indexToAttack);
 
   // Delete this number from the options
   AI_options.delete(indexToAttack);
 
-
   // If this chosen option is in Player 1 Alive, append to AI choices dict with the [choice: HIT], where 1 = HIT
   if (player1_ship_locations_alive.has(indexToAttack)) {
-    console.log("HITTTTT");
+
     ai_choices_dict[indexToAttack] = AttackResult.HIT;
 
     // Delete from the player location alive set
