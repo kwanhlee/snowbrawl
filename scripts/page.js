@@ -270,12 +270,10 @@ function runGame(state) {
         $("#timer").text(timer);
 
         if (timer == 0){
-          clearInterval(timer_interval);
-          $( ".shootable").unbind( "mouseover" );
-          $( ".shootable").unbind( "mouseleave" );
-          $( ".shootable").unbind( "click" );
-          $( ".shootable").removeClass("highlight");
-
+          let rand_element_position = Math.floor(Math.random() * player1_options.size);
+          let random_square = player1_options.getByIndex(rand_element_position);
+          player1_options.delete(random_square);
+          $('#opponent-tile-' + random_square)[0].click(); 
         }
       }, 1000); 
 
@@ -300,6 +298,8 @@ function runGame(state) {
           let target_id = $(event.target).attr("id");
   
           target_id = parseInt(target_id.split("-")[2]);
+
+          player1_options.delete(target_id);
 
           $(event.target).removeClass("shootable");
 
