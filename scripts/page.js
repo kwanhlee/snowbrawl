@@ -71,6 +71,13 @@ function multiplayer_game(){
 }
 
 function singleplayer_game(){
+  $("#actualGame").append( "<audio id='menu_music'><source src='style/sounds/jingle_bells.mp3' type='audio/mpeg'></source></audio>" );
+
+  let song = document.getElementById("menu_music");
+  song.loop = true;
+  song.load();
+  song.play();
+
   leave_menu();
   create_boards();
 }
@@ -217,6 +224,18 @@ function update_item_placed(isOrigin, ui, origin=undefined) {
 }
 
 function end_game(){
+  player1_ship_dict = {};
+  player1_ship_locations_alive = new Set();
+  ai_ship_locations = [];
+  ai_ships_locations_alive = [];
+
+  player1_options = new Set([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25]);
+  AI_options = new Set([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25]);                      
+
+  player_choices_dict = {}
+  ai_choices_dict = {}
+
+
   $("#actualGame").html("<h1 id='game_title' style='top: 30%; color: red;'>Game Ended</h1>");
   $("#actualGame").append("<button type='button' class='btn btn-primary btn-lg single-player-btn' onclick='menu_button()' style='top: 40%'>Menu</button>");
 }
