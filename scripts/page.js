@@ -37,6 +37,8 @@ Set.prototype.getByIndex = function(index) { return [...this][index]; }
 $(document).ready( function() {
   console.log("Ready!");
 
+
+
   // Set global handles (now that the page is loaded)
   gwhGame = $('#actualGame');
 });
@@ -89,7 +91,7 @@ function leave_menu(){
 
   $("#actualGame").append( "<h1 id='game_title'>Place your items</h1>" );
 
-  let timer = 30;
+  let timer = 90;
   $( "#actualGame" ).append( "<h1 id='timer'>" + timer + "</h1>" );
   let timer_interval = setInterval(function(){
     timer -= 1;
@@ -237,7 +239,8 @@ function end_game(){
 
 
   $("#actualGame").html("<h1 id='game_title' style='top: 30%; color: red;'>Game Ended</h1>");
-  $("#actualGame").append("<button type='button' class='btn btn-primary btn-lg single-player-btn' onclick='menu_button()' style='top: 40%'>Menu</button>");
+  $("#actualGame").append( "<audio id='btn_sound'><source src='style/sounds/btn_sound.mp3' type='audio/mpeg'></source></audio>" );
+  $("#actualGame").append("<button type='button' class='btn btn-primary btn-lg single-player-btn' onclick='menu_button(); document.getElementById('btn_sound').play();' style='top: 40%'>Menu</button>");
 }
 
 // Function that is called when User has placed all its items on the grid after 30 seconds
@@ -394,8 +397,9 @@ function runGame(state) {
 
 function menu_button(){
   let menu_html = "<h1 class='title'>Snow Brawl</h1>";
-  menu_html += "<button type='button' class='btn btn-primary btn-lg single-player-btn' onclick='singleplayer_game()'>Single Player</button>";
-  menu_html += "<button type='button' class='btn btn-primary btn-lg multiplayer-btn single-player-btn' onclick='multiplayer_game()'>Multiplayer</button>";
+  menu_html += "<audio id='btn_sound'><source src='style/sounds/btn_sound.mp3' type='audio/mpeg'></source></audio>"
+  menu_html += "<button type='button' class='btn btn-primary btn-lg single-player-btn' onclick='singleplayer_game(); document.getElementById('btn_sound').play();'>Single Player</button>";
+  menu_html += "<button type='button' class='btn btn-primary btn-lg multiplayer-btn single-player-btn' onclick='multiplayer_game(); document.getElementById('btn_sound').play();'>Multiplayer</button>";
   $(".game-window").css("background-image", "url('style/images/menu_background.jpg')");
   $("#actualGame").html(menu_html);
 }

@@ -27,8 +27,9 @@
     <div class='game-window'>
       <div id="actualGame">
         <h1 class="title">Snow Brawl</h1>
-    	<button type="button" class="btn btn-primary btn-lg single-player-btn" onclick="singleplayer_game()">Single Player</button> 
-    	<button type="button" class="btn btn-primary btn-lg multiplayer-btn single-player-btn" onclick="multiplayer_game()">Multiplayer</button>
+        <audio id='btn_sound'><source src='style/sounds/btn_sound.mp3' type='audio/mpeg'></source></audio>
+    	<button type="button" class="btn btn-primary btn-lg single-player-btn" onclick="singleplayer_game(); document.getElementById('btn_sound').play();">Single Player</button> 
+    	<button type="button" class="btn btn-primary btn-lg multiplayer-btn single-player-btn" onclick="multiplayer_game(); document.getElementById('btn_sound').play();">Multiplayer</button>
       </div>
     </div>
 
