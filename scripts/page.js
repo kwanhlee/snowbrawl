@@ -91,7 +91,7 @@ function leave_menu(){
 
   $("#actualGame").append( "<h1 id='game_title'>Place your items</h1>" );
 
-  let timer = 45;
+  let timer = 10;//ctrlf
   $( "#actualGame" ).append( "<h1 id='timer'>" + timer + "</h1>" );
   let timer_interval = setInterval(function(){
     timer -= 1;
@@ -240,7 +240,8 @@ function end_game(){
 
   $("#actualGame").html("<h1 id='game_title' style='top: 30%; color: red;'>Game Ended</h1>");
   $("#actualGame").append( "<audio id='btn_sound'><source src='style/sounds/btn_sound.mp3' type='audio/mpeg'></source></audio>" );
-  $("#actualGame").append("<button type='button' class='btn btn-primary btn-lg single-player-btn' onclick='menu_button(); document.getElementById('btn_sound').play();' style='top: 40%'>Menu</button>");
+  $("#actualGame").append("<button type='button' class='btn btn-primary btn-lg single-player-btn' onclick='menu_button();' style='top: 40%'>Menu</button>");
+  //$("#actualGame").append("<button type='button' class='btn btn-primary btn-lg single-player-btn' onclick='menu_button(); document.getElementById('btn_sound').play();' style='top: 40%'>Menu</button>");
 }
 
 // Function that is called when User has placed all its items on the grid after 30 seconds
@@ -336,6 +337,10 @@ function runGame(state) {
 
             // Need to append image of a hit sign to the event.target
             $("#opponent-tile-" + target_id).append("<img src='style/images/" + "hit.png'" + "class='attack_img center'" + ">");
+            
+            //audio for hit
+            let hitSound = document.getElementById('hit_sound');
+            hitSound.play();
 
             $("#ai_ships_remaining").html("Ships Remaining: " + ai_ships_locations_alive.length);
 
@@ -352,6 +357,11 @@ function runGame(state) {
           else {
             // Need to append image of miss sign to the event.target
             $("#opponent-tile-" + target_id).append("<img src='style/images/" + "miss.png'" + "class='attack_img center'" + ">");
+            
+            //audio for miss
+            let missSound = document.getElementById('miss_sound');
+            missSound.play();
+            
             console.log("MISS");
             runGame(GameState.OPPONENTTURN);
           }
@@ -402,12 +412,15 @@ function runGame(state) {
 
 
 function menu_button(){
+  location.reload();
+  /*
   let menu_html = "<h1 class='title'>Snow Brawl</h1>";
   menu_html += "<audio id='btn_sound'><source src='style/sounds/btn_sound.mp3' type='audio/mpeg'></source></audio>"
   menu_html += "<button type='button' class='btn btn-primary btn-lg single-player-btn' onclick='singleplayer_game(); document.getElementById('btn_sound').play();'>Single Player</button>";
   menu_html += "<button type='button' class='btn btn-primary btn-lg multiplayer-btn single-player-btn' onclick='multiplayer_game(); document.getElementById('btn_sound').play();'>Multiplayer</button>";
   $(".game-window").css("background-image", "url('style/images/menu_background.jpg')");
   $("#actualGame").html(menu_html);
+  */
 }
 
 
