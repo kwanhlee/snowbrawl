@@ -91,7 +91,7 @@ function leave_menu(){
 
   $("#actualGame").append( "<h1 id='game_title'>Place your items</h1>" );
 
-  let timer = 90;
+  let timer = 15;
   $( "#actualGame" ).append( "<h1 id='timer'>" + timer + "</h1>" );
   let timer_interval = setInterval(function(){
     timer -= 1;
@@ -268,6 +268,10 @@ function start_single_player_game_interaction() {
   // Remove the Legends
   $( ".select-legend" ).remove();
 
+  $("#actualGame").append("<p id='user_ships_remaining'>Ships Remaining: 8</p>");
+  $("#actualGame").append("<p id='ai_ships_remaining'>Ships Remaining: 8</p>");
+
+
   // run game
   runGame(GameState.PLAYERTURN);
 
@@ -332,6 +336,8 @@ function runGame(state) {
 
             // Need to append image of a hit sign to the event.target
             $("#opponent-tile-" + target_id).append("<img src='style/images/" + "hit.png'" + "class='attack_img center'" + ">");
+
+            $("#ai_ships_remaining").html("Ships Remaining: " + ai_ships_locations_alive.length);
 
             if(ai_ships_locations_alive.length == 0){
               $("#game_title").text("You won!");
@@ -444,6 +450,8 @@ function make_ai_attack_choices() {
 
     // Append HIT image to player's grid
     $("#user-tile-" + indexToAttack).append("<img src='style/images/" + "hit.png'" + "class='attack_img center' style='top: -5vw;'" + ">");
+
+    $("#user_ships_remaining").html("Ships Remaining: " + player1_ship_locations_alive.size);
     
   } else {
     // Else, append to AI choices dict with the choice [choice: 0]

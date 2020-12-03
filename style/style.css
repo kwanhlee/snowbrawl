@@ -63,6 +63,21 @@ body {
   transform: translateX(-50%);
 }
 
+#user_ships_remaining, #ai_ships_remaining{
+  color: white;
+  font-size: 1.7vw;
+  position: absolute;
+  top: 19%;
+}
+
+#user_ships_remaining {
+  left: 15%;
+}
+
+#ai_ships_remaining {
+  left: 55%;
+}
+
 #timer {
   color: red;
   left: 50%;
