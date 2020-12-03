@@ -91,7 +91,7 @@ function leave_menu(){
 
   $("#actualGame").append( "<h1 id='game_title'>Place your items</h1>" );
 
-  let timer = 15;
+  let timer = 45;
   $( "#actualGame" ).append( "<h1 id='timer'>" + timer + "</h1>" );
   let timer_interval = setInterval(function(){
     timer -= 1;
