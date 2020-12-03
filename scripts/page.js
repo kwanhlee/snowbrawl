@@ -342,6 +342,7 @@ function runGame(state) {
             // Need to append image of a hit sign to the event.target
             $("#opponent-tile-" + target_id).append("<img src='style/images/" + "hit.png'" + "class='attack_img center'" + ">");
 
+            //audio for hit
             let hitSound = document.getElementById('hit_sound');
             hitSound.play();
 
