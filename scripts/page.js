@@ -234,13 +234,12 @@ function end_game(){
   player1_options = new Set([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25]);
   AI_options = new Set([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25]);                      
 
-  player_choices_dict = {}
-  ai_choices_dict = {}
-
+  player_choices_dict = {};
+  ai_choices_dict = {};
 
   $("#actualGame").html("<h1 id='game_title' style='top: 30%; color: red;'>Game Ended</h1>");
-  $("#actualGame").append( "<audio id='btn_sound'><source src='style/sounds/btn_sound.mp3' type='audio/mpeg'></source></audio>" );
-  $("#actualGame").append("<button type='button' class='btn btn-primary btn-lg single-player-btn' onclick='menu_button(); document.getElementById('btn_sound').play();' style='top: 40%'>Menu</button>");
+  $("#actualGame").append("<audio id='btn_sound'><source src='style/sounds/btn_sound.mp3' type='audio/mpeg'></source></audio>");
+  $("#actualGame").append("<button type='button' class='btn btn-primary btn-lg single-player-btn' onclick='menu_button(); document.getElementById('btn_sound').play();' style='top: 40%;'>Menu</button>");
 }
 
 // Function that is called when User has placed all its items on the grid after 30 seconds
@@ -280,7 +279,7 @@ function start_single_player_game_interaction() {
 function runGame(state) {
   if (state === GameState.GAMEOVER) {
     console.log("Game Over");
-    end_game()
+    end_game();
     return;
   }
 
@@ -403,7 +402,7 @@ function runGame(state) {
 
 function menu_button(){
   let menu_html = "<h1 class='title'>Snow Brawl</h1>";
-  menu_html += "<audio id='btn_sound'><source src='style/sounds/btn_sound.mp3' type='audio/mpeg'></source></audio>"
+  menu_html += "<audio id='btn_sound'><source src='style/sounds/btn_sound.mp3' type='audio/mpeg'></source></audio>";
   menu_html += "<button type='button' class='btn btn-primary btn-lg single-player-btn' onclick='singleplayer_game(); document.getElementById('btn_sound').play();'>Single Player</button>";
   menu_html += "<button type='button' class='btn btn-primary btn-lg multiplayer-btn single-player-btn' onclick='multiplayer_game(); document.getElementById('btn_sound').play();'>Multiplayer</button>";
   $(".game-window").css("background-image", "url('style/images/menu_background.jpg')");
