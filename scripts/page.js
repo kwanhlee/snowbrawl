@@ -124,18 +124,19 @@ function add_timer(gameType){
         if (gameType === "singleplayer"){
           start_single_player_game_interaction();
         } else {
-          console.log("hey");
+          initialize_multiplayer_board();
         }
       } else {
-        // Send the error state
+        // Send the error state for multiplayer mode
         if (gameType === "multiplayer") {
           const gamesRef = db.collection('Games').doc(document_id)
-
           // Change game state to -3 for Error
           gamesRef.update({
             state: -3
           })
         }
+
+        // End Game for both modes
         end_game();
       }
     }
@@ -583,7 +584,7 @@ function join_room(){
   $("#actualGame").append("<div class='RoomChoice' id='JoinRoom'>Enter Room Code</div>");
 
   $("#actualGame").append('<input type="text" class="RoomChoice" id="inputCode">');
-  $("#actualGame").append("<button type='button' class='btn btn-primary btn-lg single-player-btn' onclick='enter_room_code();' style='top: 50%; width:10%'>Join</button>");
+  $("#actualGame").append("<button type='button' id=RoomCodeButton class='btn btn-primary btn-lg single-player-btn' onclick='enter_room_code();' style='top: 50%; width:10%'>Join</button>");
   // Set player 2
   player_number = 2;
 
@@ -600,6 +601,12 @@ function enter_room_code(){
   gamesRef.get()
     .then((docSnapshot) => {
       if (docSnapshot.exists) {
+
+        // Delete UI elements
+        document.getElementById("JoinRoom").remove();
+        document.getElementById("inputCode").remove();
+        document.getElementById("RoomCodeButton").remove();
+
         // Change game state to 0
         gamesRef.update({
           state: 0
@@ -616,8 +623,23 @@ function enter_room_code(){
         alert("Not a valid Game ID");
       }
     })
-  
+}
 
+function initialize_multiplayer_board() {
+  const aliveShipsRef = db.collection('AliveShips').doc(document_id);
+
+  for (const [key, value] of Object.entries(player1_ship_dict)) {
+    multiplayer_location_alive.add(parseInt(value.location));
+  }
+  if (player_number === 1) {
+    aliveShipsRef.update({
+      player1_ships: -3
+    })
+  } else {
+    aliveShipsRef.update({
+      player2_ships: -3
+    })
+  }
 }
 function run_multiplayer_game_engine(snapshotDoc) {
   console.log("Running Multiplayer Game Engine");
@@ -641,10 +663,6 @@ function run_multiplayer_game_engine(snapshotDoc) {
 
       // Change the UI to Board 
       start_game("multiplayer");
-
-
-
-
 
       break;
     case Multiplayer_GameState.Player1Turn:
