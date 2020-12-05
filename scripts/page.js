@@ -31,6 +31,16 @@ const AttackResult = {
   HIT: 1
 }
 
+// Multiplayer Constants and Variables//////////////////////////////////////////////////////////////////////
+let document_id = "";
+let player_options = new Set([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25]);
+
+  // Need to choose 1 or 2. Defaulted to -1.
+let player_number = - 1;
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 Set.prototype.getByIndex = function(index) { return [...this][index]; }
 
 // Main
@@ -90,11 +100,32 @@ function create_room(){
   $(".single-player-btn").remove();
   $("#actualGame").append("<div class='RoomChoice' id='CreateRoom'>Your Room Code</div>");
 
-  // Firebase
-  var game = db.collection('Games').get().then((snapshot) => {
-    snapshot.docs.forEach(doc => {
-      console.log(doc.data().state);
+  // Firebase Create Room
+  db.collection("Games").add({
+    state: -1
+  })
+  .then(function(docRef) {
+    console.log("Document written with ID: ", docRef.id);
+    document_id = docRef.id;
+
+    // Create a game for the Alive Ship collection
+    db.collection("AliveShips").doc(document_id).set({
+      player1_ships: [],
+      player2_ships: []
     })
+    .then(function() {
+      console.log("Successfully created AliveShips document");
+    })
+    .catch(function(error) {
+      console.error("Failed creating alive ship document: ", error);
+
+      // TODO: Exit and go to main screen
+    })
+  })
+  .catch(function(error) {
+    console.error("Error Adding document: ", error);
+
+    // TODO: Exit and go to main screen
   })
 
   document.getElementById("CreateRoom").append(/*text field for room code*/);
