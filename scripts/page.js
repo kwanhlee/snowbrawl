@@ -556,7 +556,9 @@ function create_room(){
     // Create a game for the Alive Ship collection
     db.collection("AliveShips").doc(document_id).set({
       player1_ships: [],
-      player2_ships: []
+      player2_ships: [],
+      player1_last_move: -1,
+      player2_last_move: -1
     })
     .then(function() {
       console.log("Successfully created AliveShips document");
@@ -650,11 +652,11 @@ function initialize_multiplayer_board() {
   // Update alive ships to database
   if (player_number === 1) {
     aliveShipsRef.update({
-      player1_ships: multiplayer_location_alive
+      player1_ships: multiplayer_location_alive,
     })
   } else {
     aliveShipsRef.update({
-      player2_ships: multiplayer_location_alive
+      player2_ships: multiplayer_location_alive,
     })
   }
 }
@@ -705,10 +707,24 @@ function run_multiplayer_game_engine(snapshotDoc) {
       break;
 
     case Multiplayer_GameState.Player1Turn:
-
+      // Mark the opponents move on Player
+      if (player_number === 1) {
+        aliveShipsRef.get().then((snapshot) => {
+          opponent_last_move = snapshot.data().player2_last_move;
+          if (opponent_last_move != -1) {
+            if (multiplayer_location_alive.includes(opponent_last_move)) {
+              // HIT
+              $("#user-tile-" + opponent_last_move).append("<img src='style/images/" + "hit.png'" + "class='attack_img center' style='top: -5vw;'" + ">");
+            } else {
+              // MISS
+              $("#user-tile-" + opponent_last_move).append("<img src='style/images/" + "miss.png'" + "class='attack_img center'" + ">");
+            }
+          }
+        })
+      }
+      
 
       if (player_number === 1) {
-
         // Bring Opponents array and check if it is a hit.
         let opponent_alive_ships = [];
             
@@ -724,7 +740,9 @@ function run_multiplayer_game_engine(snapshotDoc) {
               $("#timer").text(timer);
 
               if (timer == 0){
-                end_game();
+                gamesRef.update({
+                  state:-3
+                })
               }
             }, 1000); 
 
@@ -762,6 +780,7 @@ function run_multiplayer_game_engine(snapshotDoc) {
 
                   // Update Alive Ships on Database
                   aliveShipsRef.update({
+                    player1_last_move: target_id,
                     player2_ships: opponent_alive_ships
                   })
 
@@ -803,6 +822,10 @@ function run_multiplayer_game_engine(snapshotDoc) {
                   
                   console.log("MISS");
 
+                  aliveShipsRef.update({
+                    player1_last_move: target_id,
+                  })
+
                   gamesRef.update({
                     state: Multiplayer_GameState.Player2Turn
                   });
@@ -824,8 +847,22 @@ function run_multiplayer_game_engine(snapshotDoc) {
       }
       break;
     case Multiplayer_GameState.Player2Turn:
-     
-
+      // Mark the opponents move on Player
+      if (player_number === 2) {
+        aliveShipsRef.get().then((snapshot) => {
+          opponent_last_move = snapshot.data().player1_last_move;
+          if (opponent_last_move != -1) {
+            if (multiplayer_location_alive.includes(opponent_last_move)) {
+              // HIT
+              $("#user-tile-" + opponent_last_move).append("<img src='style/images/" + "hit.png'" + "class='attack_img center' style='top: -5vw;'" + ">");
+            } else {
+              // MISS
+              $("#user-tile-" + opponent_last_move).append("<img src='style/images/" + "miss.png'" + "class='attack_img center'" + ">");
+            }
+          }
+        })
+      }
+      
       if (player_number === 2) {
 
         // Bring Opponents array and check if it is a hit.
@@ -843,7 +880,9 @@ function run_multiplayer_game_engine(snapshotDoc) {
               $("#timer").text(timer);
 
               if (timer == 0){
-                end_game();
+                gamesRef.update({
+                  state:-3
+                })
               }
             }, 1000); 
 
@@ -881,6 +920,7 @@ function run_multiplayer_game_engine(snapshotDoc) {
 
                   // Update Alive Ships on Database
                   aliveShipsRef.update({
+                    player2_last_move: target_id,
                     player1_ships: opponent_alive_ships
                   })
 
@@ -921,6 +961,9 @@ function run_multiplayer_game_engine(snapshotDoc) {
                   
                   console.log("MISS");
 
+                  aliveShipsRef.update({
+                    player2_last_move: target_id,
+                  })
                   gamesRef.update({
                     state: Multiplayer_GameState.Player1Turn
                   });
