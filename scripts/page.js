@@ -98,7 +98,7 @@ function multiplayer_game(){
 
 function create_room(){
   $(".single-player-btn").remove();
-  $("#actualGame").append("<div class='RoomChoice' id='CreateRoom'>Your Room Code</div>");
+  $("#actualGame").append("<div class='RoomChoice' id='CreateRoom'>Your Room Code<br></div>");
 
   // Firebase Create Room
   db.collection("Games").add({
@@ -115,6 +115,14 @@ function create_room(){
     })
     .then(function() {
       console.log("Successfully created AliveShips document");
+
+       //Append Room number
+       document.getElementById("CreateRoom").append(document_id);
+
+      // Need to add a listener here 
+
+
+     
     })
     .catch(function(error) {
       console.error("Failed creating alive ship document: ", error);
@@ -124,11 +132,8 @@ function create_room(){
   })
   .catch(function(error) {
     console.error("Error Adding document: ", error);
-
     // TODO: Exit and go to main screen
   })
-
-  document.getElementById("CreateRoom").append(/*text field for room code*/);
 }
 
 function join_room(){
