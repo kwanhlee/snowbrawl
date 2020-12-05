@@ -675,6 +675,7 @@ function run_multiplayer_game_engine(snapshotDoc) {
     case Multiplayer_GameState.Error:
       end_game();
       break;
+      
     case Multiplayer_GameState.GameBegin:
       console.log("GAME STATE 0 Begin");
       // Delete the join room UI for Host
@@ -684,11 +685,116 @@ function run_multiplayer_game_engine(snapshotDoc) {
       // Change the UI to Board 
       start_game("multiplayer");
       break;
+
     case Multiplayer_GameState.Player1Turn:
+      const gamesRef = db.collection('Games').doc(document_id)
+      const aliveShipsRef = db.collection('AliveShips').doc(document_id);
+
       if (player_number === 1) {
-        console.log("YOUR TURN");
+
+        // Bring Opponents array and check if it is a hit.
+        let opponent_alive_ships = [];
+            
+        aliveShipsRef.get().then(function(doc) {
+          if (doc.exists) {
+            opponent_alive_ships = doc.data().player2_ships;
+            console.log("YOUR TURN");
+            // Player can choose opponent grid
+            let timer = 15;
+            $("#timer").html(timer);
+            let timer_interval = setInterval(function(){
+              timer -= 1;
+              $("#timer").text(timer);
+
+              if (timer == 0){
+                end_game();
+              }
+            }, 1000); 
+
+            $("#game_title").text("Select a square to shoot");
+
+            $( ".shootable" ).bind({
+              mouseover: function() {
+                // highlight the mouseover target
+                $(event.target).addClass("highlight");
+              },
+              mouseleave: function() {
+                $(event.target).removeClass("highlight");
+              },
+              click: function() {
+                $( ".shootable").unbind( "mouseover" );
+                $( ".shootable").unbind( "mouseleave" );
+                $( ".shootable").unbind( "click" );
+                $( ".shootable").removeClass("highlight");
+                clearInterval(timer_interval);
+                $("#timer").text("");
+
+                let target_id = $(event.target).attr("id");
+        
+                target_id = parseInt(target_id.split("-")[2]);
+
+                player_options.delete(target_id);
+
+                $(event.target).removeClass("shootable");
+              
+
+                if(opponent_alive_ships.includes(target_id)){
+                  console.log("HIT");
+
+                  opponent_alive_ships.splice(opponent_alive_ships.indexOf(target_id), 1);
+
+                  // Need to append image of a hit sign to the event.target
+                  $("#opponent-tile-" + target_id).append("<img src='style/images/" + "hit.png'" + "class='attack_img center'" + ">");
+                  
+                  //audio for hit
+                  let hitSound = document.getElementById('hit_sound');
+                  hitSound.play();
+
+                  // $("#ai_ships_remaining").html("Ships Remaining: " + ai_ships_locations_alive.length);
+
+                  if((opponent_alive_ships.length - 1) == 0){
+                    $("#game_title").text("You won!");
+                    setTimeout(function(){
+                      // Send End game state
+                      gamesRef.update({
+                        state: Multiplayer_GameState.GameEnded
+                      })
+                    }, 5000); 
+                  }
+                  else {
+                    gamesRef.update({
+                      state: Multiplayer_GameState.Player2Turn
+                    });
+                  }
+                }
+                else {
+                  // Need to append image of miss sign to the event.target
+                  $("#opponent-tile-" + target_id).append("<img src='style/images/" + "miss.png'" + "class='attack_img center'" + ">");
+                  
+                  //audio for miss
+                  let missSound = document.getElementById('miss_sound');
+                  missSound.play();
+                  
+                  console.log("MISS");
+
+                  gamesRef.update({
+                    state: Multiplayer_GameState.Player2Turn
+                  });
+                }
+              }
+            });
+          } else {
+            console.log("No such document")
+            end_game();
+          }
+        }) .catch(function(error){
+          console.log("Error getting document: ", error);
+          end_game()
+        })
+
       } else {
         console.log("Opponents turn");
+        $("#game_title").text("Opponent's Turn");
       }
       break;
     case Multiplayer_GameState.Player2Turn:
