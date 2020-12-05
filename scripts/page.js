@@ -111,8 +111,10 @@ function leave_menu(){
 
 function add_timer(gameType){
   // Reference to multiplayer state database
-  const gamesRef = db.collection('Games').doc(document_id)
-
+  if (document_id != "") {
+    const gamesRef = db.collection('Games').doc(document_id);
+  }
+  
   $("#actualGame").append( "<h1 id='game_title'>Place your items</h1>" );
 
   let timer = 25; // Time to place the ships on the grid.
@@ -140,7 +142,6 @@ function add_timer(gameType){
             state: -3
           })
         }
-
         // End Game for both modes
         end_game();
       }
