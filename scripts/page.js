@@ -674,7 +674,21 @@ function run_multiplayer_game_engine(snapshotDoc) {
 
       break;
     case Multiplayer_GameState.GameEnded:
-      end_game()
+      let resultString = "";
+      aliveShipsRef.get().then(function(snapshot){
+        if (player_number === 1) {
+          resultString = snapshot.data().player_1_result;
+        } else {
+          resultString = snapshot.data().player_2_result;
+        }
+
+        $("#game_title").text("You " + resultString + "!");
+
+        let timer_interval = setInterval(function(){
+          end_game()
+        }, 2000);
+      })
+      
       break;
     case Multiplayer_GameState.Error:
       end_game();
@@ -760,14 +774,18 @@ function run_multiplayer_game_engine(snapshotDoc) {
 
                   // $("#ai_ships_remaining").html("Ships Remaining: " + ai_ships_locations_alive.length);
 
-                  if((opponent_alive_ships.length - 1) == 0){
-                    $("#game_title").text("You won!");
+                  if(opponent_alive_ships.length == 0){
+  
                     setTimeout(function(){
+                      aliveShipsRef.update({
+                        player_1_result: "win",
+                        player_2_result: "lose"
+                      })
                       // Send End game state
                       gamesRef.update({
                         state: Multiplayer_GameState.GameEnded
                       })
-                    }, 2000); 
+                    }, 500); 
                   }
                   else {
                     gamesRef.update({
@@ -875,14 +893,17 @@ function run_multiplayer_game_engine(snapshotDoc) {
 
                   // $("#ai_ships_remaining").html("Ships Remaining: " + ai_ships_locations_alive.length);
 
-                  if((opponent_alive_ships.length - 1) == 0){
-                    $("#game_title").text("You won!");
+                  if(opponent_alive_ships.length == 0){
+                    aliveShipsRef.update({
+                      player_2_result: "win",
+                      player_1_result: "lose"
+                    })
                     setTimeout(function(){
                       // Send End game state
                       gamesRef.update({
                         state: Multiplayer_GameState.GameEnded
                       })
-                    }, 5000); 
+                    }, 500); 
                   }
                   else {
                     gamesRef.update({
