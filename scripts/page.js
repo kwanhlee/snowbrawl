@@ -85,8 +85,8 @@ function getRandomNumber(min, max){
   return (Math.random() * (max - min)) + min;
 }
 
-function start_game(){ //use for multiplayer
-  add_timer();
+function start_game(gameType){ //use for multiplayer
+  add_timer(gameType);
   create_boards();
 }
 
@@ -99,8 +99,7 @@ function singleplayer_game(){
   song.play();
 
   leave_menu();
-  add_timer();
-  create_boards();
+  start_game("singlePlayer");
 }
 
 function leave_menu(){
@@ -109,10 +108,10 @@ function leave_menu(){
   $(".single-player-btn").remove();
 }
 
-function add_timer(){
+function add_timer(gameType){
   $("#actualGame").append( "<h1 id='game_title'>Place your items</h1>" );
 
-  let timer = 10;//ctrlf
+  let timer = 25;//ctrlf
   $( "#actualGame" ).append( "<h1 id='timer'>" + timer + "</h1>" );
   let timer_interval = setInterval(function(){
     timer -= 1;
@@ -121,7 +120,9 @@ function add_timer(){
     if (timer == 0){
       clearInterval(timer_interval)
       if (isAllItemsPlaced() === true) {
-        start_single_player_game_interaction();
+        if (gameType === "singlePlayer"){
+          start_single_player_game_interaction();
+        }
       } else {
         end_game();
       }
@@ -494,8 +495,9 @@ function make_ai_attack_choices() {
     $("#user-tile-" + indexToAttack).append("<img src='style/images/" + "miss.png'" + "class='attack_img center'" + ">");
   }
 }
-///////////////////////////////////////////// MULTIPLAYER METHODS ///////////////////////////////////////////////
 
+///////////////////////////////////////////// MULTIPLAYER FUNCTIONS ///////////////////////////////////////////////
+/////////////////////////////////////////////////// ///////////////////////////////////////////// ///////////////
 function multiplayer_game(){
   $("#actualGame").append( "<audio id='menu_music'><source src='style/sounds/jingle_bells.mp3' type='audio/mpeg'></source></audio>" );
 
@@ -622,7 +624,7 @@ function run_multiplayer_game_engine(snapshotDoc) {
       console.log("GAME STATE 0 Begin");
 
       // Change the UI to Board 
-      create_boards();
+      start_game();
 
 
 
