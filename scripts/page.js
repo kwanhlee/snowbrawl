@@ -68,7 +68,52 @@ function getRandomNumber(min, max){
 }
 
 function multiplayer_game(){
+  $("#actualGame").append( "<audio id='menu_music'><source src='style/sounds/jingle_bells.mp3' type='audio/mpeg'></source></audio>" );
+
+  let song = document.getElementById("menu_music");
+  song.loop = true;
+  song.load();
+  song.play();
+
   leave_menu();
+
+  let roomCreateDiv = document.getElementById("CreateRoom");
+  let roomJoinDiv = document.getElementById("JoinRoom");
+
+  $("#actualGame").append("<button type='button' class='btn btn-primary btn-lg single-player-btn' onclick='create_room();' style='top: 40%'>Create</button>");
+  $("#actualGame").append("<button type='button' class='btn btn-primary btn-lg single-player-btn' onclick='join_room();' style='top: 30%'>Join</button>");
+
+}
+
+
+function create_room(){
+  $(".single-player-btn").remove();
+
+
+  $("#actualGame").append("<div class='RoomChoice' id='CreateRoom'>Your Room Code</div>");
+  document.getElementById("CreateRoom").append(/*text field for room code*/);
+}
+
+function join_room(){
+  $(".single-player-btn").remove();
+
+  $("#actualGame").append("<div class='RoomChoice' id='JoinRoom'>Enter Room Code</div>");
+
+  $("#actualGame").append('<input type="text" class="RoomChoice" id="inputCode">');
+  $("#actualGame").append("<button type='button' class='btn btn-primary btn-lg single-player-btn' onclick='enter_room_code();' style='top: 50%; width:10%'>Join</button>");
+
+
+}
+
+function enter_room_code(){
+  //start game for both players if code matches
+  let entered_code = document.getElementById("inputCode").value;
+  console.log(entered_code);
+}
+
+
+function start_game(){ //use for multiplayer
+  add_timer();
   create_boards();
 }
 
@@ -81,6 +126,7 @@ function singleplayer_game(){
   song.play();
 
   leave_menu();
+  add_timer();
   create_boards();
 }
 
@@ -88,7 +134,9 @@ function leave_menu(){
   $(".game-window").css("background-image", "url('style/images/game_background.jpg')");
   $(".title").remove();
   $(".single-player-btn").remove();
+}
 
+function add_timer(){
   $("#actualGame").append( "<h1 id='game_title'>Place your items</h1>" );
 
   let timer = 10;//ctrlf
