@@ -85,115 +85,6 @@ function getRandomNumber(min, max){
   return (Math.random() * (max - min)) + min;
 }
 
-function multiplayer_game(){
-  $("#actualGame").append( "<audio id='menu_music'><source src='style/sounds/jingle_bells.mp3' type='audio/mpeg'></source></audio>" );
-
-  let song = document.getElementById("menu_music");
-  song.loop = true;
-  song.load();
-  song.play();
-
-  leave_menu();
-
-  let roomCreateDiv = document.getElementById("CreateRoom");
-  let roomJoinDiv = document.getElementById("JoinRoom");
-
-  $("#actualGame").append("<button type='button' class='btn btn-primary btn-lg single-player-btn' onclick='create_room();' style='top: 40%'>Create</button>");
-  $("#actualGame").append("<button type='button' class='btn btn-primary btn-lg single-player-btn' onclick='join_room();' style='top: 30%'>Join</button>");
-
-}
-
-
-function create_room(){
-  $(".single-player-btn").remove();
-  $("#actualGame").append("<div class='RoomChoice' id='CreateRoom'>Your Room Code<br></div>");
-  
-  // Host is player 1
-  player_number = 1;
-
-  // Firebase Create Room
-  db.collection("Games").add({
-    state: -1
-  })
-  .then(function(docRef) {
-    console.log("Document written with ID: ", docRef.id);
-    document_id = docRef.id;
-
-    // Create a game for the Alive Ship collection
-    db.collection("AliveShips").doc(document_id).set({
-      player1_ships: [],
-      player2_ships: []
-    })
-    .then(function() {
-      console.log("Successfully created AliveShips document");
-
-       //Append Room number
-       document.getElementById("CreateRoom").append(document_id);
-
-      // Need to add a listener here 
-      db.collection("Games").doc(document_id).onSnapshot(snapshot => {
-        run_multiplayer_game_engine(snapshot);
-      })
-
-     
-    })
-    .catch(function(error) {
-      console.error("Failed creating alive ship document: ", error);
-
-      // TODO: Exit and go to main screen
-    })
-  })
-  .catch(function(error) {
-    console.error("Error Adding document: ", error);
-    // TODO: Exit and go to main screen
-  })
-}
-
-function join_room(){
-  $(".single-player-btn").remove();
-
-  $("#actualGame").append("<div class='RoomChoice' id='JoinRoom'>Enter Room Code</div>");
-
-  $("#actualGame").append('<input type="text" class="RoomChoice" id="inputCode">');
-  $("#actualGame").append("<button type='button' class='btn btn-primary btn-lg single-player-btn' onclick='enter_room_code();' style='top: 50%; width:10%'>Join</button>");
-  // Set player 2
-  player_number = 2;
-
-}
-
-function enter_room_code(){
-  //start game for both players if code matches
-  let entered_code = document.getElementById("inputCode").value;
-  
-  document_id = entered_code;
-  const gamesRef = db.collection('Games').doc(document_id)
-
-  // Try getting to game with the document id.
-  gamesRef.get()
-    .then((docSnapshot) => {
-      if (docSnapshot.exists) {
-        gamesRef.onSnapshot(snapshot => {
-          // Change game state to 0
-          gamesRef.update({
-            state: 0
-          })
-
-          // Start Game
-          run_multiplayer_game_engine(snapshot);
-        });
-      } else {
-        // Not a valid game
-        document_id = "";
-        document.getElementById("inputCode").value = "";
-        player_number = -1;
-        alert("Not a valid Game ID");
-      }
-    })
-  
-
-}
-
-
 function start_game(){ //use for multiplayer
   add_timer();
   create_boards();
@@ -603,7 +494,114 @@ function make_ai_attack_choices() {
     $("#user-tile-" + indexToAttack).append("<img src='style/images/" + "miss.png'" + "class='attack_img center'" + ">");
   }
 }
+///////////////////////////////////////////// MULTIPLAYER METHODS ///////////////////////////////////////////////
 
+function multiplayer_game(){
+  $("#actualGame").append( "<audio id='menu_music'><source src='style/sounds/jingle_bells.mp3' type='audio/mpeg'></source></audio>" );
+
+  let song = document.getElementById("menu_music");
+  song.loop = true;
+  song.load();
+  song.play();
+
+  leave_menu();
+
+  let roomCreateDiv = document.getElementById("CreateRoom");
+  let roomJoinDiv = document.getElementById("JoinRoom");
+
+  $("#actualGame").append("<button type='button' class='btn btn-primary btn-lg single-player-btn' onclick='create_room();' style='top: 40%'>Create</button>");
+  $("#actualGame").append("<button type='button' class='btn btn-primary btn-lg single-player-btn' onclick='join_room();' style='top: 30%'>Join</button>");
+
+}
+
+
+function create_room(){
+  $(".single-player-btn").remove();
+  $("#actualGame").append("<div class='RoomChoice' id='CreateRoom'>Your Room Code<br></div>");
+  
+  // Host is player 1
+  player_number = 1;
+
+  // Firebase Create Room
+  db.collection("Games").add({
+    state: -1
+  })
+  .then(function(docRef) {
+    console.log("Document written with ID: ", docRef.id);
+    document_id = docRef.id;
+
+    // Create a game for the Alive Ship collection
+    db.collection("AliveShips").doc(document_id).set({
+      player1_ships: [],
+      player2_ships: []
+    })
+    .then(function() {
+      console.log("Successfully created AliveShips document");
+
+       //Append Room number
+       document.getElementById("CreateRoom").append(document_id);
+
+      // Need to add a listener here 
+      db.collection("Games").doc(document_id).onSnapshot(snapshot => {
+        run_multiplayer_game_engine(snapshot);
+      })
+
+     
+    })
+    .catch(function(error) {
+      console.error("Failed creating alive ship document: ", error);
+
+      // TODO: Exit and go to main screen
+    })
+  })
+  .catch(function(error) {
+    console.error("Error Adding document: ", error);
+    // TODO: Exit and go to main screen
+  })
+}
+
+function join_room(){
+  $(".single-player-btn").remove();
+
+  $("#actualGame").append("<div class='RoomChoice' id='JoinRoom'>Enter Room Code</div>");
+
+  $("#actualGame").append('<input type="text" class="RoomChoice" id="inputCode">');
+  $("#actualGame").append("<button type='button' class='btn btn-primary btn-lg single-player-btn' onclick='enter_room_code();' style='top: 50%; width:10%'>Join</button>");
+  // Set player 2
+  player_number = 2;
+
+}
+
+function enter_room_code(){
+  //start game for both players if code matches
+  let entered_code = document.getElementById("inputCode").value;
+  
+  document_id = entered_code;
+  const gamesRef = db.collection('Games').doc(document_id)
+
+  // Try getting to game with the document id.
+  gamesRef.get()
+    .then((docSnapshot) => {
+      if (docSnapshot.exists) {
+        gamesRef.onSnapshot(snapshot => {
+          // Change game state to 0
+          gamesRef.update({
+            state: 0
+          })
+          // Start Game
+          run_multiplayer_game_engine(snapshot);
+        });
+      } else {
+        // Not a valid game
+        document_id = "";
+        document.getElementById("inputCode").value = "";
+        player_number = -1;
+        alert("Not a valid Game ID");
+      }
+    })
+  
+
+}
 function run_multiplayer_game_engine(snapshotDoc) {
   console.log("Running Multiplayer Game Engine");
 
@@ -621,7 +619,15 @@ function run_multiplayer_game_engine(snapshotDoc) {
     case Multiplayer_GameState.Error:
       break;
     case Multiplayer_GameState.GameBegin:
-      console.log("GAME BEINGNGINGINGI");
+      console.log("GAME STATE 0 Begin");
+
+      // Change the UI to Board 
+      create_boards();
+
+
+
+
+
       break;
     case Multiplayer_GameState.Player1Turn:
       break;
