@@ -112,7 +112,7 @@ function leave_menu(){
 function add_timer(gameType){
   $("#actualGame").append( "<h1 id='game_title'>Place your items</h1>" );
 
-  let timer = 25;//ctrlf
+  let timer = 25; // Time to place the ships on the grid.
   $( "#actualGame" ).append( "<h1 id='timer'>" + timer + "</h1>" );
   let timer_interval = setInterval(function(){
     timer -= 1;
@@ -127,6 +127,15 @@ function add_timer(gameType){
           console.log("hey");
         }
       } else {
+        // Send the error state
+        if (gameType === "multiplayer") {
+          const gamesRef = db.collection('Games').doc(document_id)
+
+          // Change game state to -3 for Error
+          gamesRef.update({
+            state: -3
+          })
+        }
         end_game();
       }
     }
@@ -591,11 +600,11 @@ function enter_room_code(){
   gamesRef.get()
     .then((docSnapshot) => {
       if (docSnapshot.exists) {
+        // Change game state to 0
+        gamesRef.update({
+          state: 0
+        })
         gamesRef.onSnapshot(snapshot => {
-          // Change game state to 0
-          gamesRef.update({
-            state: 0
-          })
           // Start Game
           run_multiplayer_game_engine(snapshot);
         });
@@ -625,6 +634,7 @@ function run_multiplayer_game_engine(snapshotDoc) {
     case Multiplayer_GameState.GameEnded:
       break;
     case Multiplayer_GameState.Error:
+      end_game();
       break;
     case Multiplayer_GameState.GameBegin:
       console.log("GAME STATE 0 Begin");
