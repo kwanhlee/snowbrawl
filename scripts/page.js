@@ -660,6 +660,11 @@ function run_multiplayer_game_engine(snapshotDoc) {
       break;
     case Multiplayer_GameState.GameBegin:
       console.log("GAME STATE 0 Begin");
+      // Delete the join room UI for Host
+      if (player_number === 1) {
+        document.getElementById("CreateRoom").remove();
+      }
+  
 
       // Change the UI to Board 
       start_game("multiplayer");
