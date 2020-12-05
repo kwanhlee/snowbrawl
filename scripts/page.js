@@ -682,12 +682,14 @@ function run_multiplayer_game_engine(snapshotDoc) {
       aliveShipsRef.get().then(function(snapshot){
         if (player_number === 1) {
           resultString = snapshot.data().player_1_result;
+          console.log(resultString);
+          $("#game_title").text("You " + resultString + "!");
         } else {
           resultString = snapshot.data().player_2_result;
+          console.log(resultString);
+          $("#game_title").text("You " + resultString + "!");
         }
-
-        $("#game_title").text("You " + resultString + "!");
-
+        
         let timer_interval = setInterval(function(){
           end_game()
         }, 2000);
@@ -796,12 +798,11 @@ function run_multiplayer_game_engine(snapshotDoc) {
                   // $("#ai_ships_remaining").html("Ships Remaining: " + ai_ships_locations_alive.length);
 
                   if(opponent_alive_ships.length == 0){
-  
+                    aliveShipsRef.update({
+                      player_1_result: "win",
+                      player_2_result: "lose"
+                    })
                     setTimeout(function(){
-                      aliveShipsRef.update({
-                        player_1_result: "win",
-                        player_2_result: "lose"
-                      })
                       // Send End game state
                       gamesRef.update({
                         state: Multiplayer_GameState.GameEnded
