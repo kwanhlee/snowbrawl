@@ -107,6 +107,9 @@ function multiplayer_game(){
 function create_room(){
   $(".single-player-btn").remove();
   $("#actualGame").append("<div class='RoomChoice' id='CreateRoom'>Your Room Code<br></div>");
+  
+  // Host is player 1
+  player_number = 1;
 
   // Firebase Create Room
   db.collection("Games").add({
@@ -153,14 +156,41 @@ function join_room(){
 
   $("#actualGame").append('<input type="text" class="RoomChoice" id="inputCode">');
   $("#actualGame").append("<button type='button' class='btn btn-primary btn-lg single-player-btn' onclick='enter_room_code();' style='top: 50%; width:10%'>Join</button>");
-
+  // Set player 2
+  player_number = 2;
 
 }
 
 function enter_room_code(){
   //start game for both players if code matches
   let entered_code = document.getElementById("inputCode").value;
-  console.log(entered_code);
+  
+  document_id = entered_code;
+  const gamesRef = db.collection('Games').doc(document_id)
+
+  // Try getting to game with the document id.
+  gamesRef.get()
+    .then((docSnapshot) => {
+      if (docSnapshot.exists) {
+        gamesRef.onSnapshot(snapshot => {
+          // Change game state to 0
+          gamesRef.update({
+            state: 0
+          })
+
+          // Start Game
+          run_multiplayer_game_engine(snapshot);
+        });
+      } else {
+        // Not a valid game
+        document_id = "";
+        document.getElementById("inputCode").value = "";
+        player_number = -1;
+        alert("Not a valid Game ID");
+      }
+    })
+  
+
 }
 
 
