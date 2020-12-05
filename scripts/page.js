@@ -110,6 +110,9 @@ function leave_menu(){
 }
 
 function add_timer(gameType){
+  // Reference to multiplayer state database
+  const gamesRef = db.collection('Games').doc(document_id)
+
   $("#actualGame").append( "<h1 id='game_title'>Place your items</h1>" );
 
   let timer = 25; // Time to place the ships on the grid.
@@ -125,11 +128,13 @@ function add_timer(gameType){
           start_single_player_game_interaction();
         } else {
           initialize_multiplayer_board();
+          gamesRef.update({
+            state: 1
+          })
         }
       } else {
         // Send the error state for multiplayer mode
         if (gameType === "multiplayer") {
-          const gamesRef = db.collection('Games').doc(document_id)
           // Change game state to -3 for Error
           gamesRef.update({
             state: -3
@@ -631,6 +636,18 @@ function initialize_multiplayer_board() {
   for (const [key, value] of Object.entries(player1_ship_dict)) {
     multiplayer_location_alive.push(parseInt(value.location));
   }
+
+   // Move all child div inside Legend div into each divs inside the grid tiles and remove style attribute for positioning
+   for (const [key, value] of Object.entries(player1_ship_dict)) {
+    $("#ship-" + key).appendTo($("#user-tile-" + value.location));
+    $("#ship-" + key).removeAttr('style');
+    $("#ship-" + key).css("top", ".3vw");
+  }
+  
+  // Remove the Legends
+  $( ".select-legend" ).remove();
+
+  // Update alive ships to database
   if (player_number === 1) {
     aliveShipsRef.update({
       player1_ships: multiplayer_location_alive
@@ -666,9 +683,13 @@ function run_multiplayer_game_engine(snapshotDoc) {
       }
       // Change the UI to Board 
       start_game("multiplayer");
-
       break;
     case Multiplayer_GameState.Player1Turn:
+      if (player_number === 1) {
+        console.log("YOUR TURN");
+      } else {
+        console.log("Opponents turn");
+      }
       break;
     case Multiplayer_GameState.Player2Turn:
       break;
