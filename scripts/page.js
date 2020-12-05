@@ -4,7 +4,8 @@
 let gwhGame;
 
 // Player's Ship Dictionary
-let player1_ship_dict = {};
+let player1_ship_dict = {}; // Also used by multiplayer
+
 let player1_ship_locations_alive = new Set();
 let ai_ship_locations = [];
 let ai_ships_locations_alive = [];
@@ -87,7 +88,7 @@ function getRandomNumber(min, max){
 
 function start_game(gameType){ //use for multiplayer
   add_timer(gameType);
-  create_boards();
+  create_boards(gameType);
 }
 
 function singleplayer_game(){
@@ -122,6 +123,8 @@ function add_timer(gameType){
       if (isAllItemsPlaced() === true) {
         if (gameType === "singleplayer"){
           start_single_player_game_interaction();
+        } else {
+          console.log("hey");
         }
       } else {
         end_game();
@@ -130,7 +133,7 @@ function add_timer(gameType){
   }, 1000);
 }
 
-function create_boards(){
+function create_boards(gameType){
   $("#actualGame").append("<div class='board' id='userBoard'></div>");
   $("#actualGame").append("<div class='board' id='opponentBoard'></div>");
 
@@ -218,7 +221,10 @@ function create_boards(){
     disabled: false
   });
 
-  make_ai_ship_choices();
+  if (gameType === "singleplayer") {
+    make_ai_ship_choices();
+  }
+
 }
 
 // If the item has been dropped into the user tile, update "placed" property to true
