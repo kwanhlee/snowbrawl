@@ -99,7 +99,7 @@ function singleplayer_game(){
   song.play();
 
   leave_menu();
-  start_game("singlePlayer");
+  start_game("singleplayer");
 }
 
 function leave_menu(){
@@ -120,7 +120,7 @@ function add_timer(gameType){
     if (timer == 0){
       clearInterval(timer_interval)
       if (isAllItemsPlaced() === true) {
-        if (gameType === "singlePlayer"){
+        if (gameType === "singleplayer"){
           start_single_player_game_interaction();
         }
       } else {
@@ -624,7 +624,7 @@ function run_multiplayer_game_engine(snapshotDoc) {
       console.log("GAME STATE 0 Begin");
 
       // Change the UI to Board 
-      start_game();
+      start_game("multiplayer");
 
 
 
