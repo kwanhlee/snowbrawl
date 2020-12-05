@@ -629,15 +629,15 @@ function initialize_multiplayer_board() {
   const aliveShipsRef = db.collection('AliveShips').doc(document_id);
 
   for (const [key, value] of Object.entries(player1_ship_dict)) {
-    multiplayer_location_alive.add(parseInt(value.location));
+    multiplayer_location_alive.push(parseInt(value.location));
   }
   if (player_number === 1) {
     aliveShipsRef.update({
-      player1_ships: -3
+      player1_ships: multiplayer_location_alive
     })
   } else {
     aliveShipsRef.update({
-      player2_ships: -3
+      player2_ships: multiplayer_location_alive
     })
   }
 }
@@ -664,8 +664,6 @@ function run_multiplayer_game_engine(snapshotDoc) {
       if (player_number === 1) {
         document.getElementById("CreateRoom").remove();
       }
-  
-
       // Change the UI to Board 
       start_game("multiplayer");
 
