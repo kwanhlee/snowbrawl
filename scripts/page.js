@@ -34,10 +34,18 @@ const AttackResult = {
 // Multiplayer Constants and Variables//////////////////////////////////////////////////////////////////////
 let document_id = "";
 let player_options = new Set([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25]);
-
+let multiplayer_location_alive = [];
   // Need to choose 1 or 2. Defaulted to -1.
 let player_number = - 1;
 
+const Multiplayer_GameState = {
+  HostWaiting: -1,
+  GameEnded: -2,
+  Error: -3,
+  GameBegin: 0,
+  Player1Turn: 1,
+  Player2Turn: 2
+}
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -120,7 +128,9 @@ function create_room(){
        document.getElementById("CreateRoom").append(document_id);
 
       // Need to add a listener here 
-
+      db.collection("Games").doc(document_id).onSnapshot(snapshot => {
+        run_multiplayer_game_engine(snapshot);
+      })
 
      
     })
@@ -564,3 +574,33 @@ function make_ai_attack_choices() {
   }
 }
 
+function run_multiplayer_game_engine(snapshotDoc) {
+  console.log("Running Multiplayer Game Engine");
+
+  let GameObject = snapshotDoc.data();
+  let gameState = GameObject.state;
+  
+  switch(gameState) {
+    case Multiplayer_GameState.HostWaiting:
+      console.log("waiting for player")
+      // TODO: Add a waiting for player ...
+
+      break;
+    case Multiplayer_GameState.GameEnded:
+      break;
+    case Multiplayer_GameState.Error:
+      break;
+    case Multiplayer_GameState.GameBegin:
+      console.log("GAME BEINGNGINGINGI");
+      break;
+    case Multiplayer_GameState.Player1Turn:
+      break;
+    case Multiplayer_GameState.Player2Turn:
+      break;
+    default:
+      break;
+  }
+
+
+  
+}
