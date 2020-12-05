@@ -88,9 +88,15 @@ function multiplayer_game(){
 
 function create_room(){
   $(".single-player-btn").remove();
-
-
   $("#actualGame").append("<div class='RoomChoice' id='CreateRoom'>Your Room Code</div>");
+
+  // Firebase
+  var game = db.collection('Games').get().then((snapshot) => {
+    snapshot.docs.forEach(doc => {
+      console.log(doc.data().state);
+    })
+  })
+
   document.getElementById("CreateRoom").append(/*text field for room code*/);
 }
 
