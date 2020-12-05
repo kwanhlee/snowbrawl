@@ -661,7 +661,7 @@ function initialize_multiplayer_board() {
 function run_multiplayer_game_engine(snapshotDoc) {
   const gamesRef = db.collection('Games').doc(document_id)
   const aliveShipsRef = db.collection('AliveShips').doc(document_id);
-  
+
   console.log("Running Multiplayer Game Engine");
 
   let GameObject = snapshotDoc.data();
@@ -674,6 +674,7 @@ function run_multiplayer_game_engine(snapshotDoc) {
 
       break;
     case Multiplayer_GameState.GameEnded:
+      end_game()
       break;
     case Multiplayer_GameState.Error:
       end_game();
@@ -766,7 +767,7 @@ function run_multiplayer_game_engine(snapshotDoc) {
                       gamesRef.update({
                         state: Multiplayer_GameState.GameEnded
                       })
-                    }, 5000); 
+                    }, 2000); 
                   }
                   else {
                     gamesRef.update({
