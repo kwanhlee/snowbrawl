@@ -111,8 +111,9 @@ function leave_menu(){
 
 function add_timer(gameType){
   // Reference to multiplayer state database
+  let gameRef = ""
   if (document_id != "") {
-    const gamesRef = db.collection('Games').doc(document_id);
+    gamesRef = db.collection('Games').doc(document_id);
   }
   
   $("#actualGame").append( "<h1 id='game_title'>Place your items</h1>" );
